@@ -4,9 +4,11 @@ import AppWrapper from './components/AppWrapper';
 import { MusicContextProvider } from './context/MusicContext';
 
 export default function App() {
-    return (<MusicContextProvider>
-        <AppWrapper />
-    </MusicContextProvider>)
+    return (
+        <MusicContextProvider>
+            <AppWrapper />
+        </MusicContextProvider>
+    );
 }
 
 const styles = StyleSheet.create({
