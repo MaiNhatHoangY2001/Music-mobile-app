@@ -1,0 +1,96 @@
+.container {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #091227;
+
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.bgTitle {
+    align-items: center;
+    flex: 1;
+}
+.title {
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.contain {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contentImage {
+    flex: 1;
+}
+.image {
+    flex: 1;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.nameSong {
+    text-align: center;
+    color: white;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 500;
+}
+.nameSinger {
+    color: rgba(165, 192, 255, 0.7);
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.contentAction {
+    flex: 1;
+}
+.listIcon {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.icon {
+    color: rgba(137, 150, 184, 0.6);
+}
+.iconRight {
+    margin-left: 10px;
+    color: rgba(137, 150, 184, 0.6);
+}
+.listIconRight {
+    display: flex;
+    flex-direction: row;
+}
+
+.timeMusic {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.bgTime {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.time {
+    color: rgba(137, 150, 184, 0.6);
+}
+
+.actionMusic {
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-around;
+}

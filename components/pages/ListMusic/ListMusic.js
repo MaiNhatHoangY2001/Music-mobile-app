@@ -28,9 +28,9 @@ function ListMusic() {
     // const onButtonPressed = () => {
     // TrackPlayer.play();
     // };
-    const context = useContext(MusicContext);
-    const num = context.num;
-    const setNum = context.setNum;
+    // const context = useContext(MusicContext);
+    // const num = context.num;
+    // const setNum = context.setNum;
 
     const songs = [
         {
