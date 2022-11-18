@@ -21,13 +21,12 @@ export default function PlayingNow() {
     const setSong = context.setSong;
 
     const [sound, setSound] = useState(true);
-
     const [play, setPlay] = useState(true);
 
     return (
         <SafeAreaView style={[{ paddingTop: STATUSBAR_HEIGHT }, styles.container]}>
             <View style={styles.header}>
-                <Link to="/">
+                <Link to="/" style={styles.back}>
                     <Ionicons name="arrow-back" size={24} color="white" />
                 </Link>
                 <View style={styles.bgTitle}>
@@ -43,11 +42,7 @@ export default function PlayingNow() {
                 <View style={styles.contentAction}>
                     <View style={styles.listIcon}>
                         <TouchableOpacity onPress={() => setSound(!sound)}>
-                            {sound ? (
-                                <Feather style={styles.icon} name="volume-1" size={24} />
-                            ) : (
-                                <Feather style={styles.icon} name="volume-x" size={24} />
-                            )}
+                            <Feather style={styles.icon} name={sound ? 'volume-1' : 'volume-x'} size={24} />
                         </TouchableOpacity>
                         <View style={styles.listIconRight}>
                             <TouchableOpacity style={styles.iconRight}>
@@ -78,11 +73,7 @@ export default function PlayingNow() {
                             <Feather name="skip-back" size={36} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => setPlay(!play)}>
-                            {play ? (
-                                <Feather name="pause" size={36} color="white" />
-                            ) : (
-                                <Feather name="play" size={36} color="white" />
-                            )}
+                            <Feather name={play ? 'pause' : 'play'} size={36} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Feather name="skip-forward" size={36} color="white" />

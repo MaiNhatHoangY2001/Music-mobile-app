@@ -17,6 +17,7 @@
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-sass-transformer": "^2.0.0",
+    "react-native-sound": "^0.11.2",
     "react-router-native": "^6.4.3",
     "sass": "^1.56.1"
   },
