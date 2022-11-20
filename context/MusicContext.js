@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react';
+import { Audio } from 'expo-av';
+import { createContext, useEffect, useState } from 'react';
 
 const MusicContext = createContext();
 
@@ -34,15 +35,70 @@ const data = [
 ];
 
 function MusicContextProvider({ children }) {
-    const [song, setSong] = useState({
-        id: -1,
-        name: '',
-        singer: '',
-        uri: 'https://i.ytimg.com/vi/4tYuIU7pLmI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAhceTIdT6zizuSKJXqXtmbHU1olw',
-        mp3: '',
-    });
+    const [song, setSong] = useState(data[0]);
+    const [play, setPlay] = useState(false);
+    const [sound, setSound] = useState(new Audio.Sound());
 
-    const contextValues = { song, setSong, data };
+    const playMusic = async () => {
+        if (play)
+            await sound.pauseAsync();
+        else
+            await sound.playAsync();
+        setPlay(!play);
+
+    }
+
+
+
+    const _onPlaybackStatusUpdate = playbackStatus => {
+        if (!playbackStatus.isLoaded) {
+            // Update your UI for the unloaded state
+            if (playbackStatus.error) {
+                console.log(`Encountered a fatal error during playback: ${playbackStatus.error}`);
+                // Send Expo team the error on Slack or the forums so we can help you debug!
+            }
+        } else {
+            // Update your UI for the loaded state
+
+            if (playbackStatus.isPlaying) {
+                // Update your UI for the playing state
+            } else {
+                // Update your UI for the paused state
+            }
+
+            if (playbackStatus.isBuffering) {
+                // Update your UI for the buffering state
+            }
+
+            if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+                // The player has just finished playing and will stop. Maybe you want to play something else?
+            }
+
+
+        }
+    };
+
+
+    useEffect(() => {
+        sound.unloadAsync();
+        setPlay(false);
+    }, [song]);
+
+
+    useEffect(() => {
+        async function loadSong(song) {
+            const tempSound = new Audio.Sound();
+            await tempSound.loadAsync({
+                uri: song.mp3
+            })
+            sound.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
+            setSound(tempSound);
+        }
+        loadSong(song);
+    }, [song])
+
+
+    const contextValues = { song, setSong, data, play, setPlay, playMusic };
 
     return <MusicContext.Provider value={contextValues}>{children}</MusicContext.Provider>;
 }

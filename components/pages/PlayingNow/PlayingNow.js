@@ -16,12 +16,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 
 export default function PlayingNow() {
+
     const context = useContext(MusicContext);
     const song = context.song;
     const setSong = context.setSong;
+    const play = context.play;
+    const setPlay = context.setPlay;
 
     const [sound, setSound] = useState(true);
-    const [play, setPlay] = useState(true);
+
 
     return (
         <SafeAreaView style={[{ paddingTop: STATUSBAR_HEIGHT }, styles.container]}>
