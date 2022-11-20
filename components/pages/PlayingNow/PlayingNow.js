@@ -18,10 +18,10 @@ const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 export default function PlayingNow() {
 
     const context = useContext(MusicContext);
-    const song = context.song;
-    const setSong = context.setSong;
-    const play = context.play;
-    const setPlay = context.setPlay;
+
+    const { song, play, status, playMusic, timeMusic } = context;
+
+
 
     const [sound, setSound] = useState(true);
 
@@ -58,12 +58,12 @@ export default function PlayingNow() {
                     </View>
                     <View style={[styles.timeMusic]}>
                         <View style={[styles.bgTime]}>
-                            <Text style={styles.time}>00:00</Text>
-                            <Text style={styles.time}>04:00</Text>
+                            <Text style={styles.time}>{timeMusic?.remainingTime?.mins}:{timeMusic?.remainingTime?.secs}</Text>
+                            <Text style={styles.time}>{timeMusic?.durationTime?.mins}:{timeMusic?.durationTime?.secs}</Text>
                         </View>
                         <Slider
                             style={{ width: '100%', height: 40 }}
-                            value={50}
+                            value={status}
                             minimumValue={0}
                             maximumValue={100}
                             thumbTintColor="#FFFFFF"
@@ -75,7 +75,7 @@ export default function PlayingNow() {
                         <TouchableOpacity>
                             <Feather name="skip-back" size={36} color="white" />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setPlay(!play)}>
+                        <TouchableOpacity onPress={() => playMusic(song)}>
                             <Feather name={play ? 'pause' : 'play'} size={36} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity>

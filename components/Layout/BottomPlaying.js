@@ -15,13 +15,16 @@ function BottomPlaying() {
     const dimensions = useWindowDimensions();
     const context = useContext(MusicContext);
 
+
     const song = context.song;
     const setSong = context.setSong;
-
+    const sound = context.sound;
     const play = context.play;
     const setPlay = context.setPlay;
     const playMusic = context.playMusic;
-    
+    const status = context.status;
+   
+
 
 
 
@@ -30,12 +33,12 @@ function BottomPlaying() {
         setSong(item);
     };
 
-   
 
 
 
 
-    
+
+
 
 
 
@@ -43,7 +46,7 @@ function BottomPlaying() {
 
         <Slider
             style={{ width: dimensions.width, flexDirection: "column" }}
-            value={50}
+            value={status}
             minimumValue={0}
             maximumValue={100}
             thumbTintColor="#FFFFFF"

@@ -38,16 +38,14 @@ function MusicContextProvider({ children }) {
     const [song, setSong] = useState(data[0]);
     const [play, setPlay] = useState(false);
     const [sound, setSound] = useState(new Audio.Sound());
-
-    const playMusic = async () => {
-        if (play)
-            await sound.pauseAsync();
-        else
-            await sound.playAsync();
-        setPlay(!play);
-
-    }
-
+    const [status, setStatus] = useState(0);
+    const [timeMusic, setTimeMusic] = useState({
+        remainingTime: {
+            hrs: "00", mins: "00", secs: "00", ms: "00"
+        }, durationTime: {
+            hrs: "00", mins: "00", secs: "00", ms: "00"
+        }
+    });
 
 
     const _onPlaybackStatusUpdate = playbackStatus => {
@@ -62,6 +60,7 @@ function MusicContextProvider({ children }) {
 
             if (playbackStatus.isPlaying) {
                 // Update your UI for the playing state
+                getStatus(playbackStatus);
             } else {
                 // Update your UI for the paused state
             }
@@ -74,9 +73,45 @@ function MusicContextProvider({ children }) {
                 // The player has just finished playing and will stop. Maybe you want to play something else?
             }
 
-
         }
     };
+
+
+    const playMusic = async () => {
+        if (play)
+            await sound.pauseAsync();
+        else
+            await sound.playAsync();
+        setPlay(!play);
+
+    }
+
+    const msToTime = (s) => {
+        const ms = s % 1000;
+        s = (s - ms) / 1000;
+        const secs = s % 60;
+        s = (s - secs) / 60;
+        const mins = s % 60;
+        const hrs = (s - mins) / 60;
+
+        return {
+            hrs, mins, secs, ms
+        }
+    }
+
+
+    const getStatus = async (playbackStatus) => {
+
+        const percentage = (playbackStatus.positionMillis / playbackStatus.durationMillis * 100);
+        const remainingTime = msToTime(playbackStatus.positionMillis);
+        const durationTime = msToTime(playbackStatus.durationMillis);
+        if (!isNaN(percentage)) {
+            setStatus(percentage);
+        } else {
+            setStatus(0);
+        }
+        setTimeMusic({ remainingTime, durationTime });
+    }
 
 
     useEffect(() => {
@@ -91,14 +126,14 @@ function MusicContextProvider({ children }) {
             await tempSound.loadAsync({
                 uri: song.mp3
             })
-            sound.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
             setSound(tempSound);
+            tempSound.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
         }
         loadSong(song);
     }, [song])
 
 
-    const contextValues = { song, setSong, data, play, setPlay, playMusic };
+    const contextValues = { song, setSong, data, play, setPlay, playMusic, sound, status, timeMusic };
 
     return <MusicContext.Provider value={contextValues}>{children}</MusicContext.Provider>;
 }
