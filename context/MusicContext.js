@@ -48,12 +48,13 @@ const initValues = {
 
 function MusicContextProvider({ children }) {
     const [songsData, setSongsData] = useState(data);
-    const [song, setSong] = useState(data[0]);
+    const [song, setSong] = useState(songsData[0]);
     const [play, setPlay] = useState(false);
     const [sound, setSound] = useState(new Audio.Sound());
     const [status, setStatus] = useState(0);
     const [timeMusic, setTimeMusic] = useState(initValues.timeMusic);
     const [isPermissionError, setIsPermissionError] = useState(false);
+    const [nextPlay, setNextPlay] = useState(false);
 
     const _onPlaybackStatusUpdate = async playbackStatus => {
         if (!playbackStatus.isLoaded) {
@@ -80,23 +81,22 @@ function MusicContextProvider({ children }) {
 
             if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
                 // The player has just finished playing and will stop. Maybe you want to play something else?
-                const indexCurrentSong = songsData.findIndex(item => item.id === song.id);
-
+                let indexCurrentSong = songsData.findIndex(item => item.id === song.id);
                 if (songsData.length > indexCurrentSong + 1) {
+                    setNextPlay(true);
                     setSong(songsData[indexCurrentSong + 1]);
-                    loadSongAndPlay(songsData[indexCurrentSong + 1]);
                     setPlay(true);
                 } else {
-                    setSong(songsData[0])
-                    loadSongNotPlay(songsData[0]);
+                    setNextPlay(true);
+                    setSong(songsData[0]);
                     setPlay(false);
+
                 }
                 setStatus(0);
             }
 
         }
     };
-
 
     const playMusic = async () => {
         if (play)
@@ -212,7 +212,7 @@ function MusicContextProvider({ children }) {
             const singer = arrayStringSplit[1];
 
             return {
-                id: index + 4,
+                id: index,
                 name: name,
                 singer: singer ? singer : "Unknown",
                 uri: 'https://res.cloudinary.com/day9lvjdb/image/upload/v1669026336/music-icon-mohammed-jabir-ap_lzicra.jpg',
@@ -221,30 +221,40 @@ function MusicContextProvider({ children }) {
 
         })
         setSongsData(songs);
+        setSong(songs[0]);
     };
 
-    const loadSongNotPlay = async (song) => {
+    const loadSong = async (song) => {
         const tempSound = new Audio.Sound();
         setStatus(0);
         setTimeMusic(initValues.timeMusic)
-        await tempSound.loadAsync({
-            uri: song.mp3
-        })
+
+        if (nextPlay) {
+            sound.unloadAsync();
+            setPlay(true);
+            await tempSound.loadAsync({
+                uri: song.mp3
+            }, { shouldPlay: true })
+        }
+        else {
+            await tempSound.loadAsync({
+                uri: song.mp3
+            })
+        }
+
         tempSound.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
         setSound(tempSound);
-        return tempSound;
-    }
+        setNextPlay(false);
 
-    const loadSongAndPlay = async (song) => {
-        const tempSound = await loadSongNotPlay(song);
-        await tempSound.playAsync();
     }
 
 
 
     useEffect(() => {
-        sound.unloadAsync();
-        setPlay(false);
+        if (!nextPlay) {
+            sound.unloadAsync();
+            setPlay(false);
+        }
     }, [song]);
 
     useEffect(() => {
@@ -253,9 +263,7 @@ function MusicContextProvider({ children }) {
 
 
     useEffect(() => {
-
-        loadSongNotPlay(song);
-
+        loadSong(song);
     }, [song])
 
 
