@@ -5,7 +5,7 @@ import { MusicContextProvider } from './context/MusicContext';
 
 export default function App() {
     return (
-        <MusicContextProvider>
+        <MusicContextProvider style={{ flex: 1 }}>
             <AppWrapper />
         </MusicContextProvider>
     );
