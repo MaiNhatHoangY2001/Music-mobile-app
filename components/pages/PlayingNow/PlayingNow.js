@@ -16,15 +16,23 @@ import { MaterialIcons } from '@expo/vector-icons';
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 
 export default function PlayingNow() {
-
     const context = useContext(MusicContext);
 
-    const { song, play, status, playMusic, timeMusic } = context;
-
-
+    const { song, setSong, play, status, playMusic, timeMusic, data } = context;
 
     const [sound, setSound] = useState(true);
 
+    const isLargeNumber = (element) => element.id == song.id;
+    const handleNextSong = () => {
+        const songNow = data.findIndex(isLargeNumber);
+        const songFind = data.find((item, index) => index == songNow + 1);
+        songFind === undefined ? setSong(data[0]) : setSong(songFind);
+    };
+    const handleBackSong = () => {
+        const songNow = data.findIndex(isLargeNumber);
+        const songFind = data.find((item, index) => index == songNow - 1);
+        songFind === undefined ? setSong(data[data.length - 1]) : setSong(songFind);
+    };
 
     return (
         <SafeAreaView style={[{ paddingTop: STATUSBAR_HEIGHT }, styles.container]}>
@@ -58,8 +66,12 @@ export default function PlayingNow() {
                     </View>
                     <View style={[styles.timeMusic]}>
                         <View style={[styles.bgTime]}>
-                            <Text style={styles.time}>{timeMusic?.remainingTime?.mins}:{timeMusic?.remainingTime?.secs}</Text>
-                            <Text style={styles.time}>{timeMusic?.durationTime?.mins}:{timeMusic?.durationTime?.secs}</Text>
+                            <Text style={styles.time}>
+                                {timeMusic?.remainingTime?.mins}:{timeMusic?.remainingTime?.secs}
+                            </Text>
+                            <Text style={styles.time}>
+                                {timeMusic?.durationTime?.mins}:{timeMusic?.durationTime?.secs}
+                            </Text>
                         </View>
                         <Slider
                             style={{ width: '100%', height: 40 }}
@@ -72,13 +84,13 @@ export default function PlayingNow() {
                         />
                     </View>
                     <View style={styles.actionMusic}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleBackSong}>
                             <Feather name="skip-back" size={36} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => playMusic(song)}>
                             <Feather name={play ? 'pause' : 'play'} size={36} color="white" />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleNextSong}>
                             <Feather name="skip-forward" size={36} color="white" />
                         </TouchableOpacity>
                     </View>
