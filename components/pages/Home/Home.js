@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Text, View, Image, FlatList } from 'react-native';
 import { Link } from 'react-router-native';
 import { MusicContext } from '../../../context/MusicContext';
@@ -12,13 +12,17 @@ function Home() {
 
     const context = useContext(MusicContext);
     const setSong = context.setSong;
-    const songs = context.data;
-
+    const songsData = context.songsData;
+    const [songs, setSongs] = useState(songsData[0]);
 
 
     const handlePushData = (item) => {
         setSong(item);
     };
+
+    useEffect(() => {
+        setSongs(songsData.filter(item => item.id <= 20));
+    }, [songsData])
 
     return (
         <View style={styles.container}>
@@ -84,8 +88,8 @@ function Home() {
 
 
 
-                                        <Text style={styles.nameSong}>{item.name}</Text>
-                                        <Text style={styles.nameSinger}>{item.singer}</Text>
+                                        <Text style={styles.nameSong} numberOfLines={1}>{item.name}</Text>
+                                        <Text style={styles.nameSinger} numberOfLines={1}>{item.singer}</Text>
 
 
                                     </View>
@@ -132,8 +136,8 @@ function Home() {
 
                                             }} />
                                         </View>
-                                        <Text style={styles.nameSong}>{item.name}</Text>
-                                        <Text style={styles.nameSinger}>{item.singer}</Text>
+                                        <Text style={styles.nameSong} numberOfLines={1}>{item.name}</Text>
+                                        <Text style={styles.nameSinger} numberOfLines={1}>{item.singer}</Text>
 
 
                                     </View>

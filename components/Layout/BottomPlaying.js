@@ -60,8 +60,8 @@ function BottomPlaying() {
 
                     }} />
                     <View style={{ marginLeft: 10 }}>
-                        <Text style={styles.nameSong}>{song.name}</Text>
-                        <Text style={styles.nameSinger}>{song.singer}</Text>
+                        <Text style={styles.nameSong}  numberOfLines={1}>{song.name}</Text>
+                        <Text style={styles.nameSinger}  numberOfLines={1}>{song.singer}</Text>
                     </View>
                     <View style={styles.actionMusic}>
                         <TouchableOpacity>
