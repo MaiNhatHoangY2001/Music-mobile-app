@@ -4,12 +4,13 @@ import { Link } from 'react-router-native';
 import { MusicContext } from '../../../context/MusicContext';
 import styles from './Home.module.scss';
 import BottomPlaying from '../../Layout';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+
 
 
 
 function Home() {
-
-
     const context = useContext(MusicContext);
     const setSong = context.setSong;
     const songsData = context.songsData;
