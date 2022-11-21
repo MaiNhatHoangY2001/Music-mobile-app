@@ -8,20 +8,51 @@ import BottomPlaying from '../../Layout';
 
 
 
+const INT_RANDOM = 10;
 
 function Home() {
     const context = useContext(MusicContext);
     const setSong = context.setSong;
     const songsData = context.songsData;
-    const [songs, setSongs] = useState(songsData[0]);
+    const [songs, setSongs] = useState(songsData);
+
+    const getRandomArbitrary = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+    }
 
 
     const handlePushData = (item) => {
         setSong(item);
     };
 
+    const randomSong = () => {
+        const lengthSongsData = songsData.length;
+
+        console.log(songsData);
+
+        if (songsData.length > 0) {
+            for (let index = 0; index < INT_RANDOM; index++) {
+
+                const intRandom = getRandomArbitrary(0, lengthSongsData);
+
+                const isHaveSongInRandomPlayList = songs?.some(item => item?.id === songsData[intRandom]?.id);
+
+
+                if (!isHaveSongInRandomPlayList) {
+                    console.log("run");
+                    setSongs(prev => [...prev, songsData[intRandom]]);
+                }
+
+            }
+        }
+
+
+    }
+
     useEffect(() => {
-        setSongs(songsData.filter(item => item.id <= 20));
+        randomSong();
     }, [songsData])
 
     return (
@@ -55,7 +86,7 @@ function Home() {
                 </View>
 
                 <View >
-                    <FlatList
+                    {songsData.length === 0 ? (<Text style={styles.recommend}>You don't have a song in mobile</Text>) : <FlatList
                         horizontal
                         data={songs}
                         renderItem={({ item, index }) => {
@@ -66,7 +97,7 @@ function Home() {
                                     >
 
                                         <View style={{ elevation: 20, shadowColor: "red", position: 'absolute', top: 10, left: 10, borderRadius: 12, borderColor: 'rgba(255, 255, 2555, 0.4)', overflow: 'hidden' }}>
-                                            <Image source={{ uri: item.uri }} style={{
+                                            <Image source={{ uri: item?.uri }} style={{
                                                 height: 200,
                                                 width: 200,
                                                 borderRadius: 12,
@@ -76,7 +107,7 @@ function Home() {
 
                                         </View>
                                         <View style={{ borderRadius: 12, borderWidth: 0, borderColor: 'rgba(255, 255, 2555, 0.4)', overflow: 'hidden' }}>
-                                            <Image source={{ uri: item.uri }} style={{
+                                            <Image source={{ uri: item?.uri }} style={{
                                                 height: 200,
                                                 width: 200,
                                                 borderRadius: 12,
@@ -88,15 +119,16 @@ function Home() {
 
 
 
-                                        <Text style={styles.nameSong} numberOfLines={1}>{item.name}</Text>
-                                        <Text style={styles.nameSinger} numberOfLines={1}>{item.singer}</Text>
+                                        <Text style={styles.nameSong} numberOfLines={1}>{item?.name}</Text>
+                                        <Text style={styles.nameSinger} numberOfLines={1}>{item?.singer}</Text>
 
 
                                     </View>
                                 </Link>
                             );
                         }}
-                    ></FlatList>
+                    />}
+
                 </View>
             </View>
 
@@ -106,7 +138,7 @@ function Home() {
                 </View>
 
                 <View >
-                    <FlatList
+                    {songsData.length === 0 ? (<Text style={styles.recommend}>You don't have a song in mobile</Text>) : <FlatList
                         horizontal
                         data={songs}
                         renderItem={({ item, index }) => {
@@ -119,7 +151,7 @@ function Home() {
 
 
                                         <View style={{ elevation: 20, shadowColor: "red", position: 'absolute', top: 10, left: 10, borderRadius: 12, borderColor: 'rgba(255, 255, 2555, 0.4)', overflow: 'hidden' }}>
-                                            <Image source={{ uri: item.uri }} style={{
+                                            <Image source={{ uri: item?.uri }} style={{
                                                 height: 200,
                                                 width: 200,
                                                 borderRadius: 12,
@@ -129,64 +161,25 @@ function Home() {
 
                                         </View>
                                         <View style={{ borderRadius: 12, borderWidth: 0, borderColor: 'rgba(255, 255, 2555, 0.4)', overflow: 'hidden' }}>
-                                            <Image source={{ uri: item.uri }} style={{
+                                            <Image source={{ uri: item?.uri }} style={{
                                                 height: 200,
                                                 width: 200,
                                                 borderRadius: 12,
 
                                             }} />
                                         </View>
-                                        <Text style={styles.nameSong} numberOfLines={1}>{item.name}</Text>
-                                        <Text style={styles.nameSinger} numberOfLines={1}>{item.singer}</Text>
+                                        <Text style={styles.nameSong} numberOfLines={1}>{item?.name}</Text>
+                                        <Text style={styles.nameSinger} numberOfLines={1}>{item?.singer}</Text>
 
 
                                     </View>
                                 </Link>
                             );
                         }}
-                    ></FlatList>
+                    />}
+
                 </View>
             </View>
-            {/* <View style={styles.bottom}>
-
-                <Slider
-                    style={{ width: dimensions.width, flexDirection: "column" }}
-                    value={50}
-                    minimumValue={0}
-                    maximumValue={100}
-                    thumbTintColor="#FFFFFF"
-                    minimumTrackTintColor="#FFFFFF"
-                    maximumTrackTintColor="#000000"
-                />
-                <View style={{ flexDirection: 'row', width: dimensions.width }}>
-
-                    <Link to="/playing-now" onPress={() => handlePushData(song)} >
-                        <View style={{ flexDirection: 'row', width: dimensions.width }}>
-                            <Image source={{ uri: song.uri }} style={{
-                                height: 80,
-                                width: 80,
-
-                            }} />
-                            <View style={{ marginLeft: 10 }}>
-                                <Text style={styles.nameSong}>{song.name}</Text>
-                                <Text style={styles.nameSinger}>{song.singer}</Text>
-                            </View>
-                            <View style={styles.actionMusic}>
-                                <TouchableOpacity>
-                                    <Feather name="skip-back" size={SIZE_ACTION} color="white" />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => setPlay(!play)}>
-                                    <Feather name={play ? 'pause' : 'play'} size={SIZE_ACTION} color="white" />
-                                </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Feather name="skip-forward" size={SIZE_ACTION} color="white" />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                    </Link>
-                </View>
-            </View> */}
             <BottomPlaying />
 
 

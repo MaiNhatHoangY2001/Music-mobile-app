@@ -47,7 +47,7 @@ const initValues = {
 }
 
 function MusicContextProvider({ children }) {
-    const [songsData, setSongsData] = useState(data);
+    const [songsData, setSongsData] = useState([]);
     const [song, setSong] = useState(songsData[0]);
     const [play, setPlay] = useState(false);
     const [sound, setSound] = useState(new Audio.Sound());
@@ -252,12 +252,12 @@ function MusicContextProvider({ children }) {
             sound.unloadAsync();
             setPlay(true);
             await tempSound.loadAsync({
-                uri: song.mp3
+                uri: song?.mp3
             }, { shouldPlay: true })
         }
         else {
             await tempSound.loadAsync({
-                uri: song.mp3
+                uri: song?.mp3
             })
         }
 
@@ -282,7 +282,9 @@ function MusicContextProvider({ children }) {
 
 
     useEffect(() => {
-        loadSong(song);
+        if (song !== undefined) {
+            loadSong(song);
+        }
     }, [song])
 
 
