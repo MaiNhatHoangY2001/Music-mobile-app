@@ -15,7 +15,6 @@ import { MusicContext } from '../../../context/MusicContext';
 import styles from './Home.module.scss';
 import BottomPlaying from '../../Layout';
 import { FlatList } from 'react-native-gesture-handler';
-import Menu from '../../Menu/Menu';
 import { Ionicons } from '@expo/vector-icons';
 
 function Home() {

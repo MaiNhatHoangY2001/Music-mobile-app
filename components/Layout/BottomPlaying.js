@@ -41,7 +41,7 @@ function BottomPlaying() {
 
             <Link to="/playing-now" onPress={() => handlePushData(song)} >
                 <View style={{ flexDirection: 'row', width: dimensions.width }}>
-                    <Image source={{ uri: song.uri }} style={{
+                    <Image source={{ uri: song?.uri }} style={{
                         height: 80,
                         width: 80,
 

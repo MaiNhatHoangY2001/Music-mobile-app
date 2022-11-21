@@ -205,7 +205,7 @@ function MusicContextProvider({ children }) {
                 onPress: () => getPermission(),
             },
             {
-                text: 'cancle',
+                text: 'cancel',
                 onPress: () => permissionAlert(),
             },
         ]);
@@ -221,7 +221,11 @@ function MusicContextProvider({ children }) {
             sortBy: 'default'
         });
 
-        const songs = media.assets.map((item, index) => {
+
+        const filterMp3 = media.assets.filter(item => item.filename.search(/.mp3/i) > -1)
+        const filterTone = filterMp3.filter(item => item.filename.search(/tone.mp3/i) === -1)
+
+        const songs = filterTone.map((item, index) => {
 
             const arrayStringSplit = item.filename.replace('.mp3', '').replace('.MP3', '').replace("(Official Music Video)", '').split("-");
             const name = arrayStringSplit[0];
@@ -234,7 +238,6 @@ function MusicContextProvider({ children }) {
                 uri: 'https://res.cloudinary.com/day9lvjdb/image/upload/v1669026336/music-icon-mohammed-jabir-ap_lzicra.jpg',
                 mp3: item.uri,
             }
-
         })
         setSongsData(songs);
         setSong(songs[0]);
