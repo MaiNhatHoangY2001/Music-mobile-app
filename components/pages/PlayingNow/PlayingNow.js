@@ -19,11 +19,14 @@ export default function PlayingNow() {
 
     const context = useContext(MusicContext);
 
-    const { song, play, status, playMusic, timeMusic } = context;
+    const { song, play, status, playMusic, timeMusic, onChangeMusicTime,sound } = context;
 
 
 
-    const [sound, setSound] = useState(true);
+    const [isMute, setIsMute] = useState(true);
+
+
+
 
 
     return (
@@ -44,8 +47,8 @@ export default function PlayingNow() {
                 </View>
                 <View style={styles.contentAction}>
                     <View style={styles.listIcon}>
-                        <TouchableOpacity onPress={() => setSound(!sound)}>
-                            <Feather style={styles.icon} name={sound ? 'volume-1' : 'volume-x'} size={24} />
+                        <TouchableOpacity onPress={() => setIsMute(!isMute)}>
+                            <Feather style={styles.icon} name={isMute ? 'volume-1' : 'volume-x'} size={24} />
                         </TouchableOpacity>
                         <View style={styles.listIconRight}>
                             <TouchableOpacity style={styles.iconRight}>
@@ -69,6 +72,10 @@ export default function PlayingNow() {
                             thumbTintColor="#FFFFFF"
                             minimumTrackTintColor="#FFFFFF"
                             maximumTrackTintColor="#000000"
+                            onSlidingComplete={onChangeMusicTime}
+                            onSlidingStart={async () => {
+                                await sound.pauseAsync();
+                            }}
                         />
                     </View>
                     <View style={styles.actionMusic}>

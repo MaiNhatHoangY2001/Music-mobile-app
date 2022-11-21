@@ -15,15 +15,8 @@ function BottomPlaying() {
     const dimensions = useWindowDimensions();
     const context = useContext(MusicContext);
 
+    const { song, setSong, playMusic, status, play, sound, onChangeMusicTime } = context;
 
-    const song = context.song;
-    const setSong = context.setSong;
-    const sound = context.sound;
-    const play = context.play;
-    const setPlay = context.setPlay;
-    const playMusic = context.playMusic;
-    const status = context.status;
-   
 
 
 
@@ -35,8 +28,7 @@ function BottomPlaying() {
 
 
 
-
-
+    
 
 
 
@@ -52,6 +44,11 @@ function BottomPlaying() {
             thumbTintColor="#FFFFFF"
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#000000"
+            onSlidingComplete={onChangeMusicTime}
+            onSlidingStart={async () => {
+                await sound.pauseAsync();
+            }}
+
         />
         <View style={{ flexDirection: 'row', width: dimensions.width }}>
 

@@ -34,20 +34,23 @@ const data = [
     },
 ];
 
-function MusicContextProvider({ children }) {
-    const [song, setSong] = useState(data[0]);
-    const [play, setPlay] = useState(false);
-    const [sound, setSound] = useState(new Audio.Sound());
-    const [status, setStatus] = useState(0);
-    const [timeMusic, setTimeMusic] = useState({
+const initValues = {
+    timeMusic : {
         remainingTime: {
             hrs: "00", mins: "00", secs: "00", ms: "00"
         }, durationTime: {
             hrs: "00", mins: "00", secs: "00", ms: "00"
         }
-    });
+    }
+}
 
-
+function MusicContextProvider({ children }) {
+    const [song, setSong] = useState(data[0]);
+    const [play, setPlay] = useState(false);
+    const [sound, setSound] = useState(new Audio.Sound());
+    const [status, setStatus] = useState(0);
+    const [timeMusic, setTimeMusic] = useState(initValues.timeMusic);
+   
     const _onPlaybackStatusUpdate = playbackStatus => {
         if (!playbackStatus.isLoaded) {
             // Update your UI for the unloaded state
@@ -61,6 +64,8 @@ function MusicContextProvider({ children }) {
             if (playbackStatus.isPlaying) {
                 // Update your UI for the playing state
                 getStatus(playbackStatus);
+
+
             } else {
                 // Update your UI for the paused state
             }
@@ -113,6 +118,19 @@ function MusicContextProvider({ children }) {
         setTimeMusic({ remainingTime, durationTime });
     }
 
+    const onChangeMusicTime = async (value) => {
+        setStatus(value);
+
+        const statusMusic = await sound.getStatusAsync();
+
+
+        await sound.setPositionAsync(value * statusMusic.durationMillis / 100);
+        console.log(statusMusic.isPlaying);
+        await sound.playAsync();
+        setPlay(true);
+    }
+
+
 
     useEffect(() => {
         sound.unloadAsync();
@@ -123,6 +141,8 @@ function MusicContextProvider({ children }) {
     useEffect(() => {
         async function loadSong(song) {
             const tempSound = new Audio.Sound();
+            setStatus(0);
+            setTimeMusic(initValues.timeMusic)
             await tempSound.loadAsync({
                 uri: song.mp3
             })
@@ -133,7 +153,7 @@ function MusicContextProvider({ children }) {
     }, [song])
 
 
-    const contextValues = { song, setSong, data, play, setPlay, playMusic, sound, status, timeMusic };
+    const contextValues = { song, setSong, data, play, setPlay, playMusic, sound, status, timeMusic, setStatus, onChangeMusicTime };
 
     return <MusicContext.Provider value={contextValues}>{children}</MusicContext.Provider>;
 }
