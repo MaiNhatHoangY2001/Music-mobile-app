@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Text, View, Image, FlatList, AppRegistry } from 'react-native';
 import { Link } from 'react-router-native';
 import { MusicContext } from '../../../context/MusicContext';
+import BottomPlaying from '../../Layout';
 import styles from './ListMusic.module.scss';
 
 //import TrackPlayer from 'react-native-track-player'
@@ -121,6 +122,7 @@ function ListMusic() {
             {/* <View style={{flex:0.2}}>
                 <Text style={styles.recommend}>playlist</Text>
             </View> */}
+            <BottomPlaying />
         </View>
     );
 }
