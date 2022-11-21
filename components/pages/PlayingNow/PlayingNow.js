@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Image, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { MusicContext } from '../../../context/MusicContext';
 import { Link } from 'react-router-native';
@@ -17,21 +17,27 @@ const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 
 export default function PlayingNow() {
     const context = useContext(MusicContext);
+    const songsData = context.songsData;
+    const [songs, setSongs] = useState(songsData[0]);
 
-    const { song, play, status, playMusic, timeMusic, onChangeMusicTime, sound } = context;
+    useEffect(() => {
+        setSongs(songsData.filter((item) => item.id <= 20));
+    }, [songsData]);
+
+    const { song, setSong, play, status, playMusic, timeMusic, onChangeMusicTime, sound } = context;
 
     const [isMute, setIsMute] = useState(true);
 
     const isLargeNumber = (element) => element.id == song.id;
     const handleNextSong = () => {
-        const songNow = data.findIndex(isLargeNumber);
-        const songFind = data.find((item, index) => index == songNow + 1);
-        songFind === undefined ? setSong(data[0]) : setSong(songFind);
+        const songNow = songs.findIndex(isLargeNumber);
+        const songFind = songs.find((item, index) => index == songNow + 1);
+        songFind === undefined ? setSong(songs[0]) : setSong(songFind);
     };
     const handleBackSong = () => {
-        const songNow = data.findIndex(isLargeNumber);
-        const songFind = data.find((item, index) => index == songNow - 1);
-        songFind === undefined ? setSong(data[data.length - 1]) : setSong(songFind);
+        const songNow = songs.findIndex(isLargeNumber);
+        const songFind = songs.find((item, index) => index == songNow - 1);
+        songFind === undefined ? setSong(songs[songs.length - 1]) : setSong(songFind);
     };
 
     return (
