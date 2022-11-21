@@ -24,11 +24,12 @@ export default function PlayingNow() {
         setSongs(songsData.filter((item) => item.id <= 20));
     }, [songsData]);
 
-    const { song, setSong, play, status, playMusic, timeMusic, onChangeMusicTime, sound } = context;
+    const { song, setSong, play, status, playMusic, timeMusic, onChangeMusicTime, sound, actionMusic } = context;
 
     const [isMute, setIsMute] = useState(true);
 
     const isLargeNumber = (element) => element.id == song.id;
+    
     const handleNextSong = () => {
         const songNow = songs.findIndex(isLargeNumber);
         const songFind = songs.find((item, index) => index == songNow + 1);
@@ -94,13 +95,13 @@ export default function PlayingNow() {
                         />
                     </View>
                     <View style={styles.actionMusic}>
-                        <TouchableOpacity onPress={handleBackSong}>
+                        <TouchableOpacity onPress={() => actionMusic(false)}>
                             <Feather name="skip-back" size={36} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => playMusic(song)}>
                             <Feather name={play ? 'pause' : 'play'} size={36} color="white" />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handleNextSong}>
+                        <TouchableOpacity onPress={() => actionMusic(true)}>
                             <Feather name="skip-forward" size={36} color="white" />
                         </TouchableOpacity>
                     </View>

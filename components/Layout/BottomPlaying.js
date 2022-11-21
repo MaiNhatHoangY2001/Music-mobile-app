@@ -15,24 +15,11 @@ function BottomPlaying() {
     const dimensions = useWindowDimensions();
     const context = useContext(MusicContext);
 
-    const { song, setSong, playMusic, status, play, sound, onChangeMusicTime } = context;
-
-
-
-
-
+    const { song, setSong, playMusic, status, play, sound, onChangeMusicTime, actionMusic } = context;
 
     const handlePushData = (item) => {
         setSong(item);
     };
-
-
-
-    
-
-
-
-
 
     return <View style={styles.bottom}>
 
@@ -64,13 +51,13 @@ function BottomPlaying() {
                         <Text style={styles.nameSinger}  numberOfLines={1}>{song.singer}</Text>
                     </View>
                     <View style={styles.actionMusic}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => actionMusic(false)}>
                             <Feather name="skip-back" size={SIZE_ACTION} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => playMusic(song)}>
                             <Feather name={play ? 'pause' : 'play'} size={SIZE_ACTION} color="white" />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => actionMusic(true)}>
                             <Feather name="skip-forward" size={SIZE_ACTION} color="white" />
                         </TouchableOpacity>
                     </View>

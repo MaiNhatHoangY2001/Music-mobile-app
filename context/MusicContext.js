@@ -81,22 +81,38 @@ function MusicContextProvider({ children }) {
 
             if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
                 // The player has just finished playing and will stop. Maybe you want to play something else?
-                let indexCurrentSong = songsData.findIndex(item => item.id === song.id);
-                if (songsData.length > indexCurrentSong + 1) {
-                    setNextPlay(true);
-                    setSong(songsData[indexCurrentSong + 1]);
-                    setPlay(true);
-                } else {
-                    setNextPlay(true);
-                    setSong(songsData[0]);
-                    setPlay(false);
-
-                }
-                setStatus(0);
+                actionMusic(true);
             }
 
         }
     };
+
+    const actionMusic = (isNextSong) => {
+        let indexCurrentSong = songsData.findIndex(item => item.id === song.id);
+
+        if (isNextSong) {
+            //next song
+            if (songsData.length - 1 > indexCurrentSong + 1)
+                updateSong(songsData[indexCurrentSong + 1], true)
+            else
+                updateSong(songsData[0], false)
+        }
+        else {
+            //previous song
+            if (indexCurrentSong - 1 >= 0)
+                updateSong(songsData[indexCurrentSong - 1], true)
+            else
+                updateSong(songsData[songsData.length - 1], false)
+        }
+
+        setStatus(0);
+    }
+
+    const updateSong = (song, isPlay) => {
+        setNextPlay(true);
+        setSong(song);
+        setPlay(isPlay);
+    }
 
     const playMusic = async () => {
         if (play)
@@ -267,7 +283,7 @@ function MusicContextProvider({ children }) {
     }, [song])
 
 
-    const contextValues = { song, setSong, data, play, setPlay, playMusic, sound, status, timeMusic, setStatus, onChangeMusicTime, songsData };
+    const contextValues = { song, setSong, data, play, setPlay, playMusic, sound, status, timeMusic, setStatus, onChangeMusicTime, songsData, actionMusic };
     if (isPermissionError)
         return (
             <View
