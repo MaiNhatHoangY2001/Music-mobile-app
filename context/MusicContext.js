@@ -214,22 +214,22 @@ function MusicContextProvider({ children }) {
     };
 
     const loadSong = async (song) => {
+
+        await sound.unloadAsync();
+
         const tempSound = new Audio.Sound();
         setStatus(0);
         setTimeMusic(initValues.timeMusic)
-
+        await tempSound.loadAsync({
+            uri: song?.mp3
+        })
         if (nextPlay) {
-            sound.unloadAsync();
             setPlay(true);
-            await tempSound.loadAsync({
-                uri: song?.mp3
-            }, { shouldPlay: true })
+            await tempSound.setStatusAsync({ shouldPlay: true });
         }
-        else {
-            await tempSound.loadAsync({
-                uri: song?.mp3
-            })
-        }
+        else
+            await tempSound.setStatusAsync({ shouldPlay: false });
+
 
         tempSound.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
         setSound(tempSound);
@@ -249,15 +249,15 @@ function MusicContextProvider({ children }) {
     useEffect(() => {
         getPermission();
 
-        Audio.setAudioModeAsync({
-            allowsRecordingIOS: false,
-            staysActiveInBackground: true,
-            interruptionModeIOS: InterruptionModeIOS.DuckOthers,
-            playsInSilentModeIOS: true,
-            shouldDuckAndroid: true,
-            interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-            playThroughEarpieceAndroid: false
-        });
+        // Audio.setAudioModeAsync({
+        //     allowsRecordingIOS: false,
+        //     staysActiveInBackground: true,
+        //     interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+        //     playsInSilentModeIOS: true,
+        //     shouldDuckAndroid: true,
+        //     interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+        //     playThroughEarpieceAndroid: false
+        // });
     }, [])
 
 
