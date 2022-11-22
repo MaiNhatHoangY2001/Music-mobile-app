@@ -75,24 +75,28 @@ function Home() {
     };
 
     const randomSong = () => {
-        const lengthSongsData = songsData.length;
+        const lengthSongsData = songsData.length - 1;
 
-        console.log(songsData);
 
         if (songsData.length > 0) {
+            const arraySongs = [];
+
             for (let index = 0; index < INT_RANDOM; index++) {
+
 
                 const intRandom = getRandomArbitrary(0, lengthSongsData);
 
-                const isHaveSongInRandomPlayList = songs?.some(item => item?.id === songsData[intRandom]?.id);
+
+
+                const isHaveSongInRandomPlayList = arraySongs?.some(item => item?.id === songsData[intRandom]?.id);
 
 
                 if (!isHaveSongInRandomPlayList) {
-                    console.log("run");
-                    setSongs(prev => [...prev, songsData[intRandom]]);
+                    arraySongs.push(songsData[intRandom]);
                 }
 
             }
+            setSongs(prev => [...prev, ...arraySongs]);
         }
 
 
