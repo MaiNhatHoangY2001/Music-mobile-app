@@ -29,7 +29,7 @@ export default function PlayingNow() {
     const [isMute, setIsMute] = useState(true);
 
     const isLargeNumber = (element) => element.id == song.id;
-    
+
     const handleNextSong = () => {
         const songNow = songs.findIndex(isLargeNumber);
         const songFind = songs.find((item, index) => index == songNow + 1);
@@ -87,7 +87,7 @@ export default function PlayingNow() {
                             maximumValue={100}
                             thumbTintColor="#FFFFFF"
                             minimumTrackTintColor="#FFFFFF"
-                            maximumTrackTintColor="#000000"
+                            maximumTrackTintColor="rgba(255, 255, 255, 0.31)"
                             onSlidingComplete={onChangeMusicTime}
                             onSlidingStart={async () => {
                                 await sound.pauseAsync();
