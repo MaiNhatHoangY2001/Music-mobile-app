@@ -9,13 +9,16 @@ import {
     Image,
     Touchable,
     TouchableOpacity,
+    FlatList
 } from 'react-native';
 import { Link } from 'react-router-native';
 import { MusicContext } from '../../../context/MusicContext';
 import styles from './Home.module.scss';
 import BottomPlaying from '../../Layout';
-import { FlatList } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
+
+const INT_RANDOM = 10;
+
 
 function Home() {
     const drawer = useRef(null);
@@ -59,15 +62,49 @@ function Home() {
     const context = useContext(MusicContext);
     const setSong = context.setSong;
     const songsData = context.songsData;
-    const [songs, setSongs] = useState(songsData[0]);
+    const [songs, setSongs] = useState(songsData);
+
+    const getRandomArbitrary = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+    }
 
     const handlePushData = (item) => {
         setSong(item);
     };
 
+    const randomSong = () => {
+        const lengthSongsData = songsData.length - 1;
+
+
+        if (songsData.length > 0) {
+            const arraySongs = [];
+
+            for (let index = 0; index < INT_RANDOM; index++) {
+
+
+                const intRandom = getRandomArbitrary(0, lengthSongsData);
+
+
+
+                const isHaveSongInRandomPlayList = arraySongs?.some(item => item?.id === songsData[intRandom]?.id);
+
+
+                if (!isHaveSongInRandomPlayList) {
+                    arraySongs.push(songsData[intRandom]);
+                }
+
+            }
+            setSongs(prev => [...prev, ...arraySongs]);
+        }
+
+
+    }
+
     useEffect(() => {
-        setSongs(songsData.filter((item) => item.id <= 20));
-    }, [songsData]);
+        randomSong();
+    }, [songsData])
 
     return (
         <DrawerLayoutAndroid ref={drawer} drawerWidth={300} drawerPosition="left" renderNavigationView={navigationView}>
@@ -89,7 +126,7 @@ function Home() {
                     </View>
 
                     <View>
-                        <FlatList
+                        {songsData.length === 0 ? (<Text style={styles.recommend}>Recommended for you</Text>) : <FlatList
                             horizontal
                             data={songs}
                             renderItem={({ item, index }) => {
@@ -146,7 +183,8 @@ function Home() {
                                     </Link>
                                 );
                             }}
-                        ></FlatList>
+                        ></FlatList>}
+
                     </View>
                 </View>
 
@@ -156,7 +194,7 @@ function Home() {
                     </View>
 
                     <View>
-                        <FlatList
+                        {songsData.length === 0 ? (<Text style={styles.recommend}>Recommended for you</Text>) : <FlatList
                             horizontal
                             data={songs}
                             renderItem={({ item, index }) => {
@@ -202,6 +240,7 @@ function Home() {
                                                     }}
                                                 />
                                             </View>
+
                                             <Text style={styles.nameSong} numberOfLines={1}>
                                                 {item.name}
                                             </Text>
@@ -212,7 +251,7 @@ function Home() {
                                     </Link>
                                 );
                             }}
-                        ></FlatList>
+                        ></FlatList>}
                     </View>
                 </View>
                 <BottomPlaying />
