@@ -24,22 +24,9 @@ export default function PlayingNow() {
         setSongs(songsData.filter((item) => item.id <= 20));
     }, [songsData]);
 
-    const { song, setSong, play, status, playMusic, timeMusic, onChangeMusicTime, sound, actionMusic } = context;
+    const { song, play, status, playMusic, timeMusic, onChangeMusicTime, sound, actionMusic } = context;
 
     const [isMute, setIsMute] = useState(true);
-
-    const isLargeNumber = (element) => element.id == song.id;
-
-    const handleNextSong = () => {
-        const songNow = songs.findIndex(isLargeNumber);
-        const songFind = songs.find((item, index) => index == songNow + 1);
-        songFind === undefined ? setSong(songs[0]) : setSong(songFind);
-    };
-    const handleBackSong = () => {
-        const songNow = songs.findIndex(isLargeNumber);
-        const songFind = songs.find((item, index) => index == songNow - 1);
-        songFind === undefined ? setSong(songs[songs.length - 1]) : setSong(songFind);
-    };
 
     return (
         <SafeAreaView style={[{ paddingTop: STATUSBAR_HEIGHT }, styles.container]}>
