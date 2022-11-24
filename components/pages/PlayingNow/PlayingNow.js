@@ -30,22 +30,6 @@ export default function PlayingNow() {
 
     return (
         <SafeAreaView style={[{ paddingTop: STATUSBAR_HEIGHT }, styles.container]}>
-             const [isMute, setIsMute] = useState(true);
-
-const isLargeNumber = (element) => element.id == song.id;
-
-const handleNextSong = () => {
-    const songNow = songs.findIndex(isLargeNumber);
-    const songFind = songs.find((item, index) => index == songNow + 1);
-    songFind === undefined ? setSong(songs[0]) : setSong(songFind);
-};
-const handleBackSong = () => {
-    const songNow = songs.findIndex(isLargeNumber);
-    const songFind = songs.find((item, index) => index == songNow - 1);
-    songFind === undefined ? setSong(songs[songs.length - 1]) : setSong(songFind);
-};
-return (
-                     
             <View style={styles.header}>
                 <Link to="/" style={styles.back}>
                     <Ionicons name="arrow-back" size={24} color="white" />
@@ -109,7 +93,7 @@ return (
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View> 
+            </View>
         </SafeAreaView>
     );
 }
