@@ -45,57 +45,8 @@ const handleBackSong = () => {
     songFind === undefined ? setSong(songs[songs.length - 1]) : setSong(songFind);
 };
 return (
-    <SafeAreaView style={[{ paddingTop: STATUSBAR_HEIGHT }, styles.container]}>
-        <View style={styles.header}>
-            <Link to="/" style={styles.back}>
-                <Ionicons name="arrow-back" size={24} color="white" />
-            </Link>
-            <View style={styles.bgTitle}>
-                <Text style={styles.title}>Playing Now</Text>
-            </View>
-        </View>
-        <View style={styles.contain}>
-            <View style={styles.contentImage}>
-                <Image style={[{ resizeMode: 'contain' }, styles.image]} source={{ uri: song.uri }} />
-                <Text style={styles.nameSong}>{song?.name}</Text>
-                <Text style={styles.nameSinger}>{song?.singer}</Text>
-            </View>
-            <View style={styles.contentAction}>
-                <View style={styles.listIcon}>
-                    <TouchableOpacity onPress={() => setIsMute(!isMute)}>
-                        <Feather style={styles.icon} name={isMute ? 'volume-1' : 'volume-x'} size={24} />
-                    </TouchableOpacity>
-                    <View style={styles.listIconRight}>
-                        <TouchableOpacity style={styles.iconRight}>
-                            <MaterialIcons style={styles.icon} name="loop" size={24} />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconRight}>
-                            <Ionicons style={styles.icon} name="share-social" size={24} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={[styles.timeMusic]}>
-                    <View style={[styles.bgTime]}>
-                        <Text style={styles.time}>
-                            {timeMusic?.remainingTime?.mins}:{timeMusic?.remainingTime?.secs}
-                        </Text>
-                        <Text style={styles.time}>
-                            {timeMusic?.durationTime?.mins}:{timeMusic?.durationTime?.secs}
-                        </Text>
-                    </View>
-                    <Slider
-                        style={{ width: '100%', height: 40 }}
-                        value={status}
-                        minimumValue={0}
-                        maximumValue={100}
-                        thumbTintColor="#FFFFFF"
-                        minimumTrackTintColor="#FFFFFF"
-                        maximumTrackTintColor="#000000"
-                        onSlidingComplete={onChangeMusicTime}
-                        onSlidingStart={async () => {
-                            await sound.pauseAsync();
-                            
-            {/* <View style={styles.header}>
+                     
+            <View style={styles.header}>
                 <Link to="/" style={styles.back}>
                     <Ionicons name="arrow-back" size={24} color="white" />
                 </Link>
@@ -158,7 +109,7 @@ return (
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View> */}
+            </View> 
         </SafeAreaView>
     );
 }
